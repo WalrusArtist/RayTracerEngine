@@ -38,6 +38,16 @@ void qbImage::SetPixel(const int x, const int y, const double red, const double 
     m_bChannel.at(x).at(y) = blue;
 }
 
+int qbImage::GetXSize()
+{
+    return m_xSize;
+}
+
+int qbImage::GetYSize()
+{
+    return m_ySize;
+}
+
 void qbImage::Display()
 {
     // aloc memory for a pixel buffer in Unit32
