@@ -29,7 +29,7 @@ namespace qbRT
         double GetAspect();
 
         // generate the ray
-        Ray GenerateRay(float proScreenX, float proScreenY);
+        bool GenerateRay(float proScreenX, float proScreenY, qbRT::Ray &cameraRay);
 
         // update camera geom
         void UpdateCameraGeometry();

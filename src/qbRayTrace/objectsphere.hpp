@@ -8,7 +8,7 @@ namespace qbRT
     class ObjSphere : public ObjectBase
     {
         public:
-            ObjSphere()
+            ObjSphere();
 
             virtual ~ObjSphere() override;
 
@@ -19,3 +19,4 @@ namespace qbRT
 
     };
 }
+#endif
