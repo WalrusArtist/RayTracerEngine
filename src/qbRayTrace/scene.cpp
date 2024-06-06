@@ -23,7 +23,7 @@ bool qbRT::Scene::Render(qbImage &outputImage)
     double xFact = 1.0 / (static_cast<double>(xSize)/2.0);
     double yFact = 1.0 / (static_cast<double>(ySize)/2.0);
     double minDist = 1e6;
-    double maxDsit = 0.0;
+    double maxDist = 0.0;
     for (int x=0; x<xSize; x++)
     {
         for (int y=0; y<ySize; y++) 
@@ -39,7 +39,16 @@ bool qbRT::Scene::Render(qbImage &outputImage)
             bool validInt = m_testSphere.TestIntersection(cameraRay, intPoint, localNormal, localColor);
             if(validInt)
             {
-                outputImage.SetPixel(x, y, 255.0, 0.0, 0.0);
+                // compute the distance between camerea and point of intersection
+                double dist = (intPoint - cameraRay.m_point1).norm();
+                // debug stuff
+                if (dist > maxDist)
+                    maxDist = dist;
+
+                if (dist > minDist)
+                    minDist = dist;
+
+                outputImage.SetPixel(x, y, 255.0 - ((dist - 9.0) / 0.94605) * 255.0, 0.0, 0.0);
             }
             else
             {
@@ -47,6 +56,9 @@ bool qbRT::Scene::Render(qbImage &outputImage)
             }
         }
     }
+
+    std::cout << "Min dist: " << minDist << std::endl;
+    std::cout << "Max dist: " << maxDist << std::endl;
 
     return true;
 }

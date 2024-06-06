@@ -11,7 +11,7 @@ qbRT::ObjSphere::~ObjSphere()
 
 }
 
-bool qbRT::ObjSphere::TestIntersection(const Ray &castRay, qbVector<double> &intPoint, qbVector<double> &localNormal, qbVector<double> &localColor)
+bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double> &intPoint, qbVector<double> &localNormal, qbVector<double> &localColor)
 {
     // compute a b and c
     qbVector<double> vhat = castRay.m_lab;
@@ -24,7 +24,27 @@ bool qbRT::ObjSphere::TestIntersection(const Ray &castRay, qbVector<double> &int
 
     if (intTest > 0.0)
     {
-        return true;
+        double numSQRT = sqrtf(intTest);
+        double t1 = (-b + numSQRT) / 2.0;
+        double t2 = (-b - numSQRT) / 2.0;
+
+        // basically ignore if t1 or t2 is negative, because it means it's behind the camera
+        if ((t1 < 0.0) || (t2 < 0.0))
+        {
+            return false;
+        }
+        else
+        {
+            if (t1 < t2)
+            {
+                intPoint = castRay.m_point1 + (vhat * t1);
+            }
+            else
+            {
+                intPoint = castRay.m_point1 + (vhat * t2);
+            }
+        }
+    return true;
     }
     else
     {
