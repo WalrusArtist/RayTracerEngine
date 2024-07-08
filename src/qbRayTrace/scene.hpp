@@ -1,11 +1,14 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <memory>
 #include <vector>
 #include <SDL2/SDL.h>
 #include "qbImage.hpp"
 #include "camera.hpp"
 #include "objectsphere.hpp"
+#include "pointlight.hpp"
+
 
 namespace qbRT
 {
@@ -19,7 +22,8 @@ namespace qbRT
     private:
     private:
         qbRT::Camera m_camera;
-        qbRT::ObjSphere m_testSphere;
+        std::vector<std::shared_ptr<qbRT::ObjectBase>> m_objectList;
+        std::vector<std::shared_ptr<qbRT::LightBase>> m_lightList;
     };
 }
 #endif

@@ -43,6 +43,10 @@ bool qbRT::ObjSphere::TestIntersection(const qbRT::Ray &castRay, qbVector<double
             {
                 intPoint = castRay.m_point1 + (vhat * t2);
             }
+
+            // compute localNorm
+            localNormal = intPoint;
+            localNormal.Normalized();
         }
     return true;
     }
