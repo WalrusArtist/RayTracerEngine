@@ -9,7 +9,6 @@
 #include "objectsphere.hpp"
 #include "pointlight.hpp"
 
-
 namespace qbRT
 {
     class Scene

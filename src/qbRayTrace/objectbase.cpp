@@ -16,6 +16,12 @@ bool qbRT::ObjectBase::TestIntersection(const Ray &castRay, qbVector<double> &in
     return false;
 }
 
+void qbRT::ObjectBase::SetTransformMatrix(const qbRT::GTform &transformMatrix)
+{
+	m_transformMatrix = transformMatrix;
+}
+
+
 bool qbRT::ObjectBase::CloseEnough(const double f1, const double f2)
 {
     return fabs(f1-f2) < EPSILON;
