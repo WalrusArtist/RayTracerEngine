@@ -23,6 +23,8 @@ namespace qbRT
         qbRT::Camera m_camera;
         std::vector<std::shared_ptr<qbRT::ObjectBase>> m_objectList;
         std::vector<std::shared_ptr<qbRT::LightBase>> m_lightList;
+         
+        void renderChunk(int startX, int endX, int ySize, double xFact, double yFact, qbImage &outputImage);
     };
 }
 #endif
