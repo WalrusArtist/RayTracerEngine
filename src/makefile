@@ -3,7 +3,7 @@ LIBS = -lSDL2
 CFLAGS = -std=c++17
 objects = main.o \
 		  CApp.o \
-		  $(patsubst %.cpp,%.o,$(wildcard ./qbRayTrace/*.cpp))
+		  $(patsubst %.cpp,%.o,$(wildcard ./waRayTrace/*.cpp))
 
 rebuilables = $(objects) $(linkTarget)
 

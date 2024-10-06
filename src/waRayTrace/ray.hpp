@@ -1,7 +1,7 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "./qbLinAlg/qbVector.h"
+#include "./linAlgModule/qbVector.h"
 
 namespace waRT {
     class Ray

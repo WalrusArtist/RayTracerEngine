@@ -2,7 +2,7 @@
 #define LIGHTBASE_H
 
 #include <memory>
-#include "./qbLinAlg/qbVector.h"
+#include "./linAlgModule/qbVector.h"
 #include "ray.hpp"
 #include "objectbase.hpp"
 namespace waRT {

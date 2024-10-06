@@ -33,3 +33,4 @@
 *.o
 .vscode/
 wget-log
+waRay

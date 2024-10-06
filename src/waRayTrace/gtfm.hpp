@@ -1,8 +1,8 @@
 #ifndef GTFM_H
 #define GTFM_H
 
-#include "./qbLinAlg/qbVector.h"
-#include "./qbLinAlg/qbMatrix.h"
+#include "./linAlgModule/qbVector.h"
+#include "./linAlgModule/qbMatrix.h"
 #include "ray.hpp"
 
 namespace waRT {

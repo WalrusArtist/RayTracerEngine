@@ -2,9 +2,9 @@
 #define CAPP_H
 
 #include <SDL2/SDL.h>
-#include "./qbRayTrace/waImage.hpp"
-#include "./qbRayTrace/scene.hpp"
-#include "./qbRayTrace/camera.hpp"
+#include "./waRayTrace/waImage.hpp"
+#include "./waRayTrace/scene.hpp"
+#include "./waRayTrace/camera.hpp"
 class CApp
 {
 public:

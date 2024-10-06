@@ -1,7 +1,7 @@
 #ifndef OBJECTBASE_H
 #define OBJECTBASE_H
 
-#include "./qbLinAlg/qbVector.h"
+#include "./linAlgModule/qbVector.h"
 #include "ray.hpp"
 #include "gtfm.hpp"
 

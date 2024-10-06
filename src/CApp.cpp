@@ -1,5 +1,5 @@
 #include "CApp.h"
-#include "./qbRayTrace/qbLinAlg/qbVector.h"
+#include "./waRayTrace/linAlgModule/qbVector.h"
 
 // const (default)
 CApp::CApp()
