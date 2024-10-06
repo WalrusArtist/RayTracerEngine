@@ -2,8 +2,7 @@
 #include <thread>
 #include <vector>
 
-qbRT::Scene::Scene()
-{
+waRT::Scene::Scene() {
 	 
 	m_camera.SetPosition(	qbVector<double>{std::vector<double> {0.0, -10.0, 0.0}} );
 	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}} );
@@ -11,14 +10,12 @@ qbRT::Scene::Scene()
 	m_camera.SetHorzSize(0.25);
 	m_camera.SetAspect(16.0 / 9.0);
 	m_camera.UpdateCameraGeometry();
-	
 	 
-	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
-	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
-	m_objectList.push_back(std::make_shared<qbRT::ObjSphere> (qbRT::ObjSphere()));
-	
+	m_objectList.push_back(std::make_shared<waRT::ObjSphere> (waRT::ObjSphere()));
+	m_objectList.push_back(std::make_shared<waRT::ObjSphere> (waRT::ObjSphere()));
+	m_objectList.push_back(std::make_shared<waRT::ObjSphere> (waRT::ObjSphere()));
 	 
-	qbRT::GTform testMatrix1, testMatrix2, testMatrix3;
+	waRT::GTform testMatrix1, testMatrix2, testMatrix3;
 	testMatrix1.SetTransform(	qbVector<double>{std::vector<double>{-1.5, 0.0, 0.0}},
 					qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
 					qbVector<double>{std::vector<double>{0.5, 0.5, 0.75}});
@@ -39,13 +36,12 @@ qbRT::Scene::Scene()
 	m_objectList.at(1) -> m_baseColor = qbVector<double>{std::vector<double>{255.0, 128.0, 0.0}};
 	m_objectList.at(2) -> m_baseColor = qbVector<double>{std::vector<double>{255.0, 200.0, 0.0}};
 	
-	 
-	m_lightList.push_back(std::make_shared<qbRT::PointLight> (qbRT::PointLight()));
+	m_lightList.push_back(std::make_shared<waRT::PointLight> (waRT::PointLight()));
 	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {5.0, -10.0, -5.0}};
 	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {255.0, 255.0, 255.0}};
 }
 
-bool qbRT::Scene::Render(qbImage &outputImage) {
+bool waRT::Scene::Render(waImage &outputImage) {
     int xSize = outputImage.GetXSize();
     int ySize = outputImage.GetYSize();
     
@@ -57,7 +53,7 @@ bool qbRT::Scene::Render(qbImage &outputImage) {
 
      
     auto renderChunk = [&](int startX, int endX) {
-        qbRT::Ray cameraRay;
+        waRT::Ray cameraRay;
         qbVector<double> intPoint(3);
         qbVector<double> localNormal(3);
         qbVector<double> localColor(3);
@@ -104,7 +100,6 @@ bool qbRT::Scene::Render(qbImage &outputImage) {
 
                  
                 if (hitObject) {
-                     
                     double intensity = 0.0;
                     bool validIllum = false;
                     qbVector<double> finalColor(3);
@@ -120,21 +115,16 @@ bool qbRT::Scene::Render(qbImage &outputImage) {
                                             closestColor.GetElement(1) * intensity,
                                             closestColor.GetElement(2) * intensity);
                     } else {
-                         
                         outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
                     }
                 } else {
-                     
                     outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
                 }
             }
         }
-
         std::cout << "Thread completed rendering from X=" << startX << " to X=" << endX << std::endl;
     };
 
-
-     
     int chunkSize = xSize / numThreads;   
 
     for (int i = 0; i < numThreads; ++i) {
@@ -143,7 +133,6 @@ bool qbRT::Scene::Render(qbImage &outputImage) {
         threads.emplace_back(renderChunk, startX, endX);   
     }
 
-     
     for (auto &t : threads) {
         t.join();
     }

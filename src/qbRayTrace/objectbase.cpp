@@ -2,28 +2,18 @@
 #include <math.h>
 #define EPSILON 1e-21f;
 
-qbRT::ObjectBase::ObjectBase(){
+waRT::ObjectBase::ObjectBase(){}
+waRT::ObjectBase::~ObjectBase(){}
 
-}
-
-qbRT::ObjectBase::~ObjectBase()
-{
-
-}
-
-bool qbRT::ObjectBase::TestIntersection(const Ray &castRay, qbVector<double> &intPoint, qbVector<double> &localNormal, qbVector<double> &localColor)
-{
+bool waRT::ObjectBase::TestIntersection(const Ray &castRay, qbVector<double> &intPoint, qbVector<double> &localNormal, qbVector<double> &localColor) {
     return false;
 }
 
-void qbRT::ObjectBase::SetTransformMatrix(const qbRT::GTform &transformMatrix)
-{
+void waRT::ObjectBase::SetTransformMatrix(const waRT::GTform &transformMatrix) {
 	m_transformMatrix = transformMatrix;
 }
 
-
-bool qbRT::ObjectBase::CloseEnough(const double f1, const double f2)
-{
+bool waRT::ObjectBase::CloseEnough(const double f1, const double f2) {
     return fabs(f1-f2) < EPSILON;
 }
 

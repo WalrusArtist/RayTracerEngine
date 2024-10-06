@@ -2,7 +2,7 @@
 #define CAPP_H
 
 #include <SDL2/SDL.h>
-#include "./qbRayTrace/qbImage.hpp"
+#include "./qbRayTrace/waImage.hpp"
 #include "./qbRayTrace/scene.hpp"
 #include "./qbRayTrace/camera.hpp"
 class CApp
@@ -21,9 +21,9 @@ private:
     void PrintVector(const qbVector<double> &inputVector);
 
 private:
-    qbImage m_image;
+    waImage m_image;
 
-    qbRT::Scene m_scene;
+    waRT::Scene m_scene;
     // SDL2 STUFF
     bool isRunning;
     SDL_Window *pWindow;

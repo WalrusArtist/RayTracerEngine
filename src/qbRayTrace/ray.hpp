@@ -3,8 +3,7 @@
 
 #include "./qbLinAlg/qbVector.h"
 
-namespace qbRT
-{
+namespace waRT {
     class Ray
     {
     public:

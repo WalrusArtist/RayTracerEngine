@@ -1,22 +1,18 @@
-#include "qbImage.hpp"
+#include "waImage.hpp"
 
-qbImage::qbImage()
-{
+waImage::waImage() {
     m_xSize = 0;
     m_ySize = 0;
     m_pTexture = NULL;
 }
 
-qbImage::~qbImage()
-{
-    if (m_pTexture != NULL)
-    {
+waImage::~waImage() {
+    if (m_pTexture != NULL) {
         SDL_DestroyTexture(m_pTexture);
     }
 }
 
-void qbImage::Initialize(const int xSize, const int ySize, SDL_Renderer *pRenderer)
-{
+void waImage::Initialize(const int xSize, const int ySize, SDL_Renderer *pRenderer) {
     // resize
     m_rChannel.resize(xSize, std::vector<double>(ySize, 0.0));
     m_gChannel.resize(xSize, std::vector<double>(ySize, 0.0));
@@ -27,29 +23,25 @@ void qbImage::Initialize(const int xSize, const int ySize, SDL_Renderer *pRender
     m_ySize = ySize;
     m_pRenderer = pRenderer;
 
-    // init
+    // innit bruv
     InitTexture();
 }
 
-void qbImage::SetPixel(const int x, const int y, const double red, const double green, const double blue)
-{
+void waImage::SetPixel(const int x, const int y, const double red, const double green, const double blue) {
     m_rChannel.at(x).at(y) = red;
     m_gChannel.at(x).at(y) = green;
     m_bChannel.at(x).at(y) = blue;
 }
 
-int qbImage::GetXSize()
-{
+int waImage::GetXSize() {
     return m_xSize;
 }
 
-int qbImage::GetYSize()
-{
+int waImage::GetYSize() {
     return m_ySize;
 }
 
-void qbImage::Display()
-{
+void waImage::Display() {
     // aloc memory for a pixel buffer in Unit32
     Uint32 *tempPixel = new Uint32[m_xSize * m_ySize];
 
@@ -81,8 +73,7 @@ void qbImage::Display()
 }
 
 // func to initialize the texture
-void qbImage::InitTexture()
-{
+void waImage::InitTexture() {
     Uint32 rmask, gmask, bmask, amask;
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -108,8 +99,7 @@ void qbImage::InitTexture()
     SDL_FreeSurface(tempSurface);
 }
 
-Uint32 qbImage::ConvertColor(const double red, const double green, const double blue)
-{
+Uint32 waImage::ConvertColor(const double red, const double green, const double blue) {
     unsigned char r = static_cast<unsigned char>(red);
     unsigned char g = static_cast<unsigned char>(green);
     unsigned char b = static_cast<unsigned char>(blue);

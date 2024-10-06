@@ -1,1 +1,1 @@
-g++ -o g++ -o qbRay main.cpp CApp.cpp -lSDL2 -std=c++17
+g++ -o g++ -o waRay main.cpp CApp.cpp -lSDL2 -std=c++17

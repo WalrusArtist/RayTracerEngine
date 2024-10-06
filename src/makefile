@@ -1,4 +1,4 @@
-linkTarget = qbRay
+linkTarget = waRay
 LIBS = -lSDL2
 CFLAGS = -std=c++17
 objects = main.o \
