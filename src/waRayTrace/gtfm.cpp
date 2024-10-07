@@ -1,3 +1,49 @@
+/*
+    This class `GTform` (Geometric Transformation) defines a 4x4 transformation matrix used to represent and apply transformations (translation, rotation, and scaling) in 3D space. It supports forward and inverse transformations, and is integral to transforming objects, vectors, and rays in a ray tracing engine. Here's a breakdown of the key functionalities:
+
+    1. **Constructor and Destructor**:
+       - The default constructor initializes the forward (`m_fwdtfm`) and backward (`m_bcktfm`) transformation matrices to identity matrices.
+       - Another constructor allows initialization with custom 4x4 matrices, ensuring that both matrices are valid (4x4) or throws an exception.
+       - The destructor performs cleanup, though it has no specific behavior beyond default destruction.
+
+    2. **Setting Transformations (`SetTransform`)**:
+       This method applies translation, rotation, and scaling to build the forward transformation matrix:
+       - **Translation**: A translation matrix is built by setting the 4th column to the translation vector components.
+       - **Rotation**: Three rotation matrices (X, Y, Z) are constructed using standard 3D rotation matrix formulas based on input angles.
+       - **Scaling**: A scaling matrix is created with the input scale values along each axis.
+       - The final forward transformation matrix (`m_fwdtfm`) is constructed by multiplying these matrices in a specific order: 
+         `Translation * Scale * RotationX * RotationY * RotationZ`.
+       - The backward transformation matrix (`m_bcktfm`) is calculated as the inverse of the forward matrix, allowing reverse transformations.
+
+    3. **Getters**:
+       - `GetForward()`: Returns the forward transformation matrix.
+       - `GetBackward()`: Returns the backward transformation matrix.
+
+    4. **Applying Transformations to Rays and Vectors (`Apply`)**:
+       - **For Rays**: 
+         The method `Apply(const waRT::Ray &inputRay, bool dirFlag)` applies either the forward or backward transformation to the input ray, transforming its two endpoints (`m_point1` and `m_point2`) and updating the ray's direction vector (`m_lab`).
+         The direction flag (`dirFlag`) controls whether the forward or backward transformation is used:
+         - `true`: Uses the forward transformation.
+         - `false`: Uses the backward transformation.
+       - **For Vectors**: 
+         The method `Apply(const qbVector<double> &inputVector, bool dirFlag)` transforms a 3D vector by converting it to a 4D vector (homogeneous coordinates) and applying the appropriate transformation matrix. The resulting 4D vector is then converted back to a 3D vector.
+
+    5. **Operator Overloading**:
+       - **Multiplication (`operator*`)**: Combines two `GTform` objects by multiplying their forward matrices, creating a new `GTform` with the resulting forward matrix and its inverse as the backward matrix. This allows concatenation of transformations.
+       - **Assignment (`operator=`)**: Assigns the forward and backward matrices from another `GTform` object to the current instance.
+
+    6. **Printing Utilities (`PrintMatrix`, `PrintVector`)**:
+       These functions provide utility methods for printing the contents of the transformation matrices and vectors in a readable format.
+       - `PrintMatrix(bool dirFlag)`: Prints either the forward or backward matrix depending on the direction flag.
+       - `Print(const qbMatrix2<double> &matrix)`: Prints the elements of a 4x4 matrix.
+       - `PrintVector(const qbVector<double> &inputVector)`: Prints the elements of a vector.
+
+    Summary:
+    - The `GTform` class encapsulates a 4x4 transformation matrix for performing geometric transformations such as translation, rotation, and scaling.
+    - It supports both forward and inverse transformations and can be applied to rays and vectors, making it fundamental for object and ray transformations in the ray tracing engine.
+    - The class provides methods for constructing transformation matrices, applying them to objects, and printing their results for debugging.
+*/
+
 #include "gtfm.hpp"
 
 waRT::GTform::GTform() {
@@ -106,12 +152,9 @@ qbVector<double> waRT::GTform::Apply(const qbVector<double> &inputVector, bool d
 namespace waRT {
 	waRT::GTform operator* (const waRT::GTform &lhs, const waRT::GTform &rhs) {
 		qbMatrix2<double> fwdResult = lhs.m_fwdtfm * rhs.m_fwdtfm;
-		
 		qbMatrix2<double> bckResult = fwdResult;
 		bckResult.Inverse();
-
 		waRT::GTform finalResult (fwdResult, bckResult);
-		
 		return finalResult;
 	}
 }

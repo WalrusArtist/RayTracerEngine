@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include "waImage.hpp"
 #include "camera.hpp"
+#include "objectplane.hpp"
 #include "objectsphere.hpp"
 #include "pointlight.hpp"
 
