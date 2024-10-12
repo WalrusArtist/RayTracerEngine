@@ -61,6 +61,7 @@
 #include <vector>
 
 waRT::Scene::Scene() {
+    // test stuff
 	m_camera.SetPosition(	qbVector<double>{std::vector<double> {0.0, -10.0, -2.0}} );
 	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}} );
 	m_camera.SetUp			( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}} );
@@ -74,6 +75,11 @@ waRT::Scene::Scene() {
 	 
     m_objectList.push_back(std::make_shared<waRT::ObjectPlane> (waRT::ObjectPlane()));
     m_objectList.at(3) -> m_baseColor = qbVector<double>{std::vector<double> {128.0, 128.0, 128.0}};
+    waRT::GTform planeMatrix;
+	planeMatrix.SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0, 0.75}},
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{4.0, 4.0, 1.0}});
+    m_objectList.at(3) -> SetTransformMatrix(planeMatrix);
 
 	waRT::GTform testMatrix1, testMatrix2, testMatrix3;
 
@@ -112,9 +118,9 @@ bool waRT::Scene::Render(waImage &outputImage) {
      
     auto renderChunk = [&](int startX, int endX) {
         waRT::Ray cameraRay;
-        qbVector<double> intPoint(3);
-        qbVector<double> localNormal(3);
-        qbVector<double> localColor(3);
+        qbVector<double> tempIntPoint(3);
+        qbVector<double> tempNormal(3);
+        qbVector<double> tempColor(3);
         double minDist = 1e6;
         double maxDist = 0.0;
 
@@ -123,50 +129,52 @@ bool waRT::Scene::Render(waImage &outputImage) {
                 double normX = (static_cast<double>(x) * xFact) - 1.0;
                 double normY = (static_cast<double>(y) * yFact) - 1.0;
                 m_camera.GenerateRay(normX, normY, cameraRay);
-                bool hitObject = false;     
-                qbVector<double> closestIntPoint(3);    
-                qbVector<double> closestNormal(3);      
-                qbVector<double> closestColor(3);       
-                double closestDist = 1e6;               
-                 
+                std::shared_ptr<waRT::ObjectBase> closestObject; 
+                qbVector<double> closestIntPoint{3};    
+                qbVector<double> closestNormal  {3};      
+                qbVector<double> closestColor   {3};       
+                double closestDist = 1e6;          
+                bool hitObject = false; 
                 for (auto currentObject : m_objectList) {
-                    qbVector<double> tempIntPoint(3);
-                    qbVector<double> tempNormal(3);
-                    qbVector<double> tempColor(3);
                     bool validInt = currentObject->TestIntersection(cameraRay, tempIntPoint, tempNormal, tempColor);
-                    
                     if (validInt) {
                         hitObject = true;
                         double dist = (tempIntPoint - cameraRay.m_point1).norm();
                         if (dist < closestDist) {
-                            closestDist = dist;
+                            closestDist     = dist;
                             closestIntPoint = tempIntPoint;
-                            closestNormal = tempNormal;
-                            closestColor = tempColor;
+                            closestNormal   = tempNormal;
+                            closestColor    = tempColor;
+                            closestObject = currentObject;
                         }
                     }
                 }
                  
                 if (hitObject) {
-                    double intensity = 0.0;
+                    double intensity;
                     bool validIllum = false;
-                    qbVector<double> finalColor(3);
-
+                    bool illumFound = false;
+                    qbVector<double> color{3};
+                    double red = 0.0;
+                    double green = 0.0;
+                    double blue = 0.0;
                     for (auto currentLight : m_lightList) {
-                        validIllum = currentLight->ComputeIllumination(closestIntPoint, closestNormal, m_objectList, nullptr, finalColor, intensity);
+                        validIllum = currentLight->ComputeIllumination(closestIntPoint, closestNormal, m_objectList, nullptr, color, intensity);
+                        if (validIllum){
+						    illumFound = true;
+						    red += color.GetElement(0) * intensity;
+						    green += color.GetElement(1) * intensity;
+						    blue += color.GetElement(2) * intensity;
+					    }
                     }
 
-                    if (validIllum) {
-                        outputImage.SetPixel(x, y, 
-                                            closestColor.GetElement(0) * intensity,
-                                            closestColor.GetElement(1) * intensity,
-                                            closestColor.GetElement(2) * intensity);
-                    } else {
-                        outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
+                    if (illumFound) {
+                        red *= closestColor.GetElement(0);
+                        green *= closestColor.GetElement(1);
+                        blue *= closestColor.GetElement(2);
+                        outputImage.SetPixel(x, y, red, green, blue);
                     }
-                } else {
-                    outputImage.SetPixel(x, y, 0.0, 0.0, 0.0);
-                }
+                } 
             }
         }
         std::cout << "Thread completed rendering from X=" << startX << " to X=" << endX << std::endl;

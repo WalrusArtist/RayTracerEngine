@@ -37,19 +37,14 @@ bool CApp::OnInit()
     return true;
 }
 
-int CApp::OnExecute()
-{
+int CApp::OnExecute() {
     SDL_Event event;
-
-    if (OnInit() == false)
-    {
+    if (OnInit() == false){
         return -1;
     }
 
-    while (isRunning)
-    {
-        while (SDL_PollEvent(&event) != 0)
-        {
+    while (isRunning) {
+        while (SDL_PollEvent(&event) != 0) {
             OnEvent(&event);
         }
         OnLoop();
@@ -57,20 +52,15 @@ int CApp::OnExecute()
     }
 }
 
-void CApp::OnEvent(SDL_Event *event)
-{
-    if (event->type == SDL_QUIT)
-    {
+void CApp::OnEvent(SDL_Event *event) {
+    if (event->type == SDL_QUIT) {
         isRunning = false;
     }
 }
 
-void CApp::OnLoop()
-{
-}
+void CApp::OnLoop() {}
 
-void CApp::OnRender()
-{
+void CApp::OnRender() {
 /*     SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(pRenderer);
 
@@ -84,8 +74,7 @@ void CApp::OnRender()
     SDL_RenderPresent(pRenderer); */
 }
 
-void CApp::OnExit()
-{
+void CApp::OnExit() {
     SDL_DestroyRenderer(pRenderer);
     SDL_DestroyWindow(pWindow);
     pWindow = NULL;
@@ -94,11 +83,9 @@ void CApp::OnExit()
 
 // private funks
 
-void CApp::PrintVector(const qbVector<double> &inputVector)
-{
+void CApp::PrintVector(const qbVector<double> &inputVector) {
     int nRows = inputVector.GetNumDims();
-    for (int row = 0; row < nRows; ++row)
-    {
+    for (int row = 0; row < nRows; ++row) {
         std::cout << std::fixed << std::setprecision(3) << inputVector.GetElement(row) << std::endl;
     }
 }
