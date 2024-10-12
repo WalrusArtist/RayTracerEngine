@@ -14,12 +14,12 @@
             - Sphere 2 is scaled to `(0.75, 0.5, 0.5)`.
             - Sphere 3 is translated to `(1.5, 0.0, 0.0)` and scaled to `(0.75, 0.75, 0.75)`.
          - Each sphere is also assigned a base color:
-            - Sphere 1 is colored `(64.0, 128.0, 200.0)`.
-            - Sphere 2 is colored `(255.0, 128.0, 0.0)`.
-            - Sphere 3 is colored `(255.0, 200.0, 0.0)`.
+            - Sphere 1 is colored `(64.0, 0.5, 200.0)`.
+            - Sphere 2 is colored `(1.0, 0.5, 0.0)`.
+            - Sphere 3 is colored `(1.0, 200.0, 0.0)`.
 
        - **Light Initialization**: 
-         - A `PointLight` is added to `m_lightList`. The light is placed at `(5.0, -10.0, -5.0)` with a color `(255.0, 255.0, 255.0)` representing white light.
+         - A `PointLight` is added to `m_lightList`. The light is placed at `(5.0, -10.0, -5.0)` with a color `(1.0, 1.0, 1.0)` representing white light.
 
     2. **Render Function (`Scene::Render`)**:
        - This method generates the final image by casting rays through each pixel of the image, calculating intersections with objects, and computing lighting effects. It uses multi-threading to parallelize the rendering process, making use of the available CPU cores.
@@ -74,7 +74,7 @@ waRT::Scene::Scene() {
 	m_objectList.push_back(std::make_shared<waRT::ObjSphere> (waRT::ObjSphere()));
 	 
     m_objectList.push_back(std::make_shared<waRT::ObjectPlane> (waRT::ObjectPlane()));
-    m_objectList.at(3) -> m_baseColor = qbVector<double>{std::vector<double> {128.0, 128.0, 128.0}};
+    m_objectList.at(3) -> m_baseColor = qbVector<double>{std::vector<double> {0.5, 0.5, 0.5}};
     waRT::GTform planeMatrix;
 	planeMatrix.SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0, 0.75}},
 					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
@@ -83,27 +83,27 @@ waRT::Scene::Scene() {
 
 	waRT::GTform testMatrix1, testMatrix2, testMatrix3;
 
-	testMatrix1.SetTransform(	qbVector<double>{std::vector<double>{-1.5, 0.0, 0.0}},
-					qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					qbVector<double>{std::vector<double>{0.5, 0.5, 0.75}});						
-	testMatrix2.SetTransform(	qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					qbVector<double>{std::vector<double>{0.75, 0.5, 0.5}});
-	testMatrix3.SetTransform(	qbVector<double>{std::vector<double>{1.5, 0.0, 0.0}},
-					qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
-					qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}});
+	testMatrix1.SetTransform(qbVector<double>{std::vector<double>{-1.5, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.5, 0.5, 0.75}});						
+	testMatrix2.SetTransform(qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.75, 0.5, 0.5}});
+	testMatrix3.SetTransform(qbVector<double>{std::vector<double>{1.5, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}},
+					         qbVector<double>{std::vector<double>{0.75, 0.75, 0.75}});
 														
 	m_objectList.at(0) -> SetTransformMatrix(testMatrix1);
 	m_objectList.at(1) -> SetTransformMatrix(testMatrix2);
 	m_objectList.at(2) -> SetTransformMatrix(testMatrix3);
 	
-	m_objectList.at(0) -> m_baseColor = qbVector<double>{std::vector<double>{64.0, 128.0, 200.0}};
-	m_objectList.at(1) -> m_baseColor = qbVector<double>{std::vector<double>{255.0, 128.0, 0.0}};
-	m_objectList.at(2) -> m_baseColor = qbVector<double>{std::vector<double>{255.0, 200.0, 0.0}};
+	m_objectList.at(0) -> m_baseColor = qbVector<double>{std::vector<double>{0.25, 0.5, 0.8}};
+	m_objectList.at(1) -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 0.5, 0.0}};
+	m_objectList.at(2) -> m_baseColor = qbVector<double>{std::vector<double>{1.0, 0.8, 0.0}};
 	
 	m_lightList.push_back(std::make_shared<waRT::PointLight> (waRT::PointLight()));
 	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {5.0, -10.0, -5.0}};
-	m_lightList.at(0) -> m_color = qbVector<double> {std::vector<double> {255.0, 255.0, 255.0}};
+	m_lightList.at(0) -> m_color = qbVector<double>    {std::vector<double> {1.0, 1.0, 1.0}};
 }
 
 bool waRT::Scene::Render(waImage &outputImage) {
@@ -145,7 +145,7 @@ bool waRT::Scene::Render(waImage &outputImage) {
                             closestIntPoint = tempIntPoint;
                             closestNormal   = tempNormal;
                             closestColor    = tempColor;
-                            closestObject = currentObject;
+                            closestObject   = currentObject;
                         }
                     }
                 }
@@ -162,16 +162,15 @@ bool waRT::Scene::Render(waImage &outputImage) {
                         validIllum = currentLight->ComputeIllumination(closestIntPoint, closestNormal, m_objectList, nullptr, color, intensity);
                         if (validIllum){
 						    illumFound = true;
-						    red += color.GetElement(0) * intensity;
+						    red   += color.GetElement(0) * intensity;
 						    green += color.GetElement(1) * intensity;
-						    blue += color.GetElement(2) * intensity;
+						    blue  += color.GetElement(2) * intensity;
 					    }
                     }
-
                     if (illumFound) {
-                        red *= closestColor.GetElement(0);
+                        red   *= closestColor.GetElement(0);
                         green *= closestColor.GetElement(1);
-                        blue *= closestColor.GetElement(2);
+                        blue  *= closestColor.GetElement(2);
                         outputImage.SetPixel(x, y, red, green, blue);
                     }
                 } 
@@ -184,10 +183,9 @@ bool waRT::Scene::Render(waImage &outputImage) {
 
     for (int i = 0; i < numThreads; ++i) {
         int startX = i * chunkSize;
-        int endX = (i == numThreads - 1) ? xSize : (i + 1) * chunkSize;   
+        int endX   = (i == numThreads - 1) ? xSize : (i + 1) * chunkSize;   
         threads.emplace_back(renderChunk, startX, endX);   
     }
-
     for (auto &t : threads) { t.join();}
     return true;
 }
