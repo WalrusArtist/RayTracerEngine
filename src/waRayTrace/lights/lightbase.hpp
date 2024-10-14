@@ -2,9 +2,9 @@
 #define LIGHTBASE_H
 
 #include <memory>
-#include "./linAlgModule/qbVector.h"
-#include "ray.hpp"
-#include "objectbase.hpp"
+#include "../linAlgModule/qbVector.h"
+#include "../ray.hpp"
+#include "../primitives/objectbase.hpp"
 namespace waRT {
     class LightBase {
         public:

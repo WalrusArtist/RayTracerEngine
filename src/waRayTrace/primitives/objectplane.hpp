@@ -2,7 +2,7 @@
 #define OBJECTPLANE_H
 
 #include "objectbase.hpp"
-#include "gtfm.hpp"
+#include "../gtfm.hpp"
 
 namespace waRT {
     class ObjectPlane : public ObjectBase {

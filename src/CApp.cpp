@@ -9,17 +9,14 @@ CApp::CApp()
     pRenderer = NULL;
 }
 
-bool CApp::OnInit()
-{
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-    {
+bool CApp::OnInit() {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
     }
 
     pWindow = SDL_CreateWindow("YADAYAD", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
 
-    if (pWindow != NULL)
-    {
+    if (pWindow != NULL) {
         pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
         // Init the image
         m_image.Initialize(1280, 720, pRenderer);
@@ -29,9 +26,7 @@ bool CApp::OnInit()
         m_scene.Render(m_image);
         m_image.Display();
         SDL_RenderPresent(pRenderer);
-    }
-    else
-    {
+    } else {
         return false;
     }
     return true;
@@ -39,7 +34,7 @@ bool CApp::OnInit()
 
 int CApp::OnExecute() {
     SDL_Event event;
-    if (OnInit() == false){
+    if (OnInit() == false) {
         return -1;
     }
 

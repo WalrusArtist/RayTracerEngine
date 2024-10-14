@@ -6,9 +6,9 @@
 #include <SDL2/SDL.h>
 #include "waImage.hpp"
 #include "camera.hpp"
-#include "objectplane.hpp"
-#include "objectsphere.hpp"
-#include "pointlight.hpp"
+#include "./primitives/objectplane.hpp"
+#include "./primitives/objectsphere.hpp"
+#include "./lights/pointlight.hpp"
 
 namespace waRT {
     class Scene {

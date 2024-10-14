@@ -1,9 +1,9 @@
 #ifndef OBJECTBASE_H
 #define OBJECTBASE_H
 
-#include "./linAlgModule/qbVector.h"
-#include "ray.hpp"
-#include "gtfm.hpp"
+#include "../linAlgModule/qbVector.h"
+#include "../ray.hpp"
+#include "../gtfm.hpp"
 
 namespace waRT {
     class ObjectBase {
