@@ -62,9 +62,9 @@
 
 waRT::Scene::Scene() {
     // test stuff
-	m_camera.SetPosition(	qbVector<double>{std::vector<double> {0.0, -10.0, -2.0}} );
-	m_camera.SetLookAt	( qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}} );
-	m_camera.SetUp			( qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}} );
+	m_camera.SetPosition(qbVector<double>{std::vector<double> {0.0, -10.0, -2.0}});
+	m_camera.SetLookAt	(qbVector<double>{std::vector<double> {0.0, 0.0, 0.0}});
+	m_camera.SetUp		(qbVector<double>{std::vector<double> {0.0, 0.0, 1.0}});
 	m_camera.SetHorzSize(0.25);
 	m_camera.SetAspect(16.0 / 9.0);
 	m_camera.UpdateCameraGeometry();
@@ -103,7 +103,15 @@ waRT::Scene::Scene() {
 	
 	m_lightList.push_back(std::make_shared<waRT::PointLight> (waRT::PointLight()));
 	m_lightList.at(0) -> m_location = qbVector<double> {std::vector<double> {5.0, -10.0, -5.0}};
-	m_lightList.at(0) -> m_color = qbVector<double>    {std::vector<double> {1.0, 1.0, 1.0}};
+	m_lightList.at(0) -> m_color    = qbVector<double> {std::vector<double> {1.0, 1.0, 1.0}};
+
+    m_lightList.push_back(std::make_shared<waRT::PointLight> (waRT::PointLight()));
+	m_lightList.at(1) -> m_location = qbVector<double> {std::vector<double> {-5.0, -10.0, -5.0}};
+	m_lightList.at(1) -> m_color    = qbVector<double> {std::vector<double> {1.0, 0.0, 0.0}};
+
+    m_lightList.push_back(std::make_shared<waRT::PointLight> (waRT::PointLight()));
+	m_lightList.at(2) -> m_location = qbVector<double> {std::vector<double> {0.0, -10.0, -5.0}};
+	m_lightList.at(2) -> m_color    = qbVector<double> {std::vector<double> {0.0, 1.0, 0.0}};
 }
 
 bool waRT::Scene::Render(waImage &outputImage) {
@@ -155,9 +163,9 @@ bool waRT::Scene::Render(waImage &outputImage) {
                     bool validIllum = false;
                     bool illumFound = false;
                     qbVector<double> color{3};
-                    double red = 0.0;
+                    double red   = 0.0;
                     double green = 0.0;
-                    double blue = 0.0;
+                    double blue  = 0.0;
                     for (auto currentLight : m_lightList) {
                         validIllum = currentLight->ComputeIllumination(closestIntPoint, closestNormal, m_objectList, nullptr, color, intensity);
                         if (validIllum){
@@ -176,7 +184,6 @@ bool waRT::Scene::Render(waImage &outputImage) {
                 } 
             }
         }
-        std::cout << "Thread completed rendering from X=" << startX << " to X=" << endX << std::endl;
     };
 
     int chunkSize = xSize / numThreads;   

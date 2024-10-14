@@ -71,7 +71,7 @@ bool waRT::ObjSphere::TestIntersection(const waRT::Ray &castRay, qbVector<double
 				poi = bckRay.m_point1 + (vhat * t2);
 			}
 			intPoint = m_transformMatrix.Apply(poi, waRT::FWDTFORM);
-			qbVector<double> objOrigin = qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}};
+			qbVector<double> objOrigin    = qbVector<double>{std::vector<double>{0.0, 0.0, 0.0}};
 			qbVector<double> newObjOrigin = m_transformMatrix.Apply(objOrigin, waRT::FWDTFORM);
 			localNormal = intPoint - newObjOrigin;
 			localNormal.Normalize();

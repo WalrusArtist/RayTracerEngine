@@ -72,10 +72,8 @@ qbVector<double> waRT::Camera::GetScreenCenter() { return m_projectionScreenCent
 
 // compute camera geom
 void waRT::Camera::UpdateCameraGeometry() {
-    m_alignmentVector        = m_cameraLookAt - m_cameraPosition;
-    m_alignmentVector.Normalize();
-    m_projectionScreenU      = qbVector<double>::cross(m_alignmentVector, m_cameraUp);
-    m_projectionScreenU.Normalize();
+    m_alignmentVector        = (m_cameraLookAt - m_cameraPosition).Normalized();
+    m_projectionScreenU      = (qbVector<double>::cross(m_alignmentVector, m_cameraUp)).Normalized();
     m_projectionScreenV      = qbVector<double>::cross(m_projectionScreenU, m_alignmentVector);
     m_projectionScreenCentre = m_cameraPosition + (m_cameraLength * m_alignmentVector);
     m_projectionScreenU      = m_projectionScreenU * m_cameraHorzSize;

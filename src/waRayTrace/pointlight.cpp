@@ -45,26 +45,39 @@ waRT::PointLight::PointLight() {
 
 waRT::PointLight::~PointLight() {}
 
-bool waRT::PointLight::ComputeIllumination( const qbVector<double> &intPoint, const qbVector<double> &localNormal,
-                                            const std::vector<std::shared_ptr<waRT::ObjectBase>> &objectList,
-                                            const std::shared_ptr<waRT::ObjectBase> &currentObject,
-                                            qbVector<double> &color, double &intensity) {
+bool waRT::PointLight::ComputeIllumination(const qbVector<double> &intPoint, const qbVector<double> &localNormal,
+                                           const std::vector<std::shared_ptr<waRT::ObjectBase>> &objectList,
+                                           const std::shared_ptr<waRT::ObjectBase> &currentObject,
+                                           qbVector<double> &color, double &intensity) {
     qbVector<double> lightDir   = (m_location - intPoint).Normalized();
     qbVector<double> startPoint = intPoint;
 
-    double angle = acos(qbVector<double>::dot(localNormal, lightDir));
-
-    // if away from light, daaaark
-    double PI_BY_TWO_APROX = 1.5708;
-    if (angle > PI_BY_TWO_APROX) {
-        // daaark
-        color = m_color;
-        intensity = 0.0;
-        return false;
+    waRT::Ray lightRay(startPoint, startPoint + lightDir);
+    qbVector<double> poi       {3};
+    qbVector<double> poiNormal {3};
+    qbVector<double> poiColor  {3};
+    bool validInt = false;
+    for (auto sceneObject : objectList) {
+        if (sceneObject != currentObject) {
+            validInt = sceneObject -> TestIntersection(lightRay, poi, poiNormal, poiColor);
+        }
+        if (validInt)
+            break;
     }
-    else {
-        color = m_color;
-        intensity = m_intensity * (1.0 - (angle / PI_BY_TWO_APROX));
-        return true;
+    if (!validInt) {
+        double angle = acos(qbVector<double>::dot(localNormal, lightDir));
+        if (angle > 1.5708) {
+            color     = m_color;
+            intensity = 0.0;
+            return false;
+        } else {
+            color     = m_color;
+            intensity = m_intensity * (1.0 - (angle / 1.5708));
+            return true;
+        }
+    } else {
+      color     = m_color;
+      intensity = 0.0;
+      return false;
     }
 }

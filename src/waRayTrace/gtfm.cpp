@@ -67,9 +67,9 @@ void waRT::GTform::SetTransform(const qbVector<double> &translation,
 				                const qbVector<double> &scale) {
 	qbMatrix2<double> translationMatrix	{4, 4};
 	qbMatrix2<double> rotationMatrixX	{4, 4};
-	qbMatrix2<double>	rotationMatrixY	{4, 4};
+	qbMatrix2<double> rotationMatrixY	{4, 4};
 	qbMatrix2<double> rotationMatrixZ	{4, 4};
-	qbMatrix2<double>	scaleMatrix	{4, 4};
+	qbMatrix2<double> scaleMatrix	    {4, 4};
 
 	translationMatrix.SetToIdentity();
 	rotationMatrixX.SetToIdentity();
@@ -120,11 +120,11 @@ waRT::Ray waRT::GTform::Apply(const waRT::Ray &inputRay, bool dirFlag) {
 	if (dirFlag) {
 		outputRay.m_point1 = this -> Apply(inputRay.m_point1, waRT::FWDTFORM);
 		outputRay.m_point2 = this -> Apply(inputRay.m_point2, waRT::FWDTFORM);
-		outputRay.m_lab = outputRay.m_point2 - outputRay.m_point1;
+		outputRay.m_lab    = outputRay.m_point2 - outputRay.m_point1;
 	} else {
 		outputRay.m_point1 = this -> Apply(inputRay.m_point1, waRT::BCKTFORM);
 		outputRay.m_point2 = this -> Apply(inputRay.m_point2, waRT::BCKTFORM);
-		outputRay.m_lab = outputRay.m_point2 - outputRay.m_point1;
+		outputRay.m_lab    = outputRay.m_point2 - outputRay.m_point1;
 	}
 	return outputRay;
 }
@@ -143,9 +143,9 @@ qbVector<double> waRT::GTform::Apply(const qbVector<double> &inputVector, bool d
 		resultVector = m_bcktfm * tempVector;
 	}
 
-	qbVector<double> outputVector {std::vector<double> { resultVector.GetElement(0),
-								                         resultVector.GetElement(1),
-								                         resultVector.GetElement(2) }};													
+	qbVector<double> outputVector {std::vector<double> {resultVector.GetElement(0),
+								                        resultVector.GetElement(1),
+								                        resultVector.GetElement(2) }};													
 	return outputVector;
 }
 
@@ -168,7 +168,7 @@ waRT::GTform waRT::GTform::operator= (const waRT::GTform &rhs) {
 }
 
 void waRT::GTform::PrintMatrix(bool dirFlag) {
-	if (dirFlag){
+	if (dirFlag) {
 		Print(m_fwdtfm);
 	} else {
 		Print(m_bcktfm);
